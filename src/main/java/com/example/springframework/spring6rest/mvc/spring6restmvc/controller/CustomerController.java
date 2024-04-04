@@ -24,7 +24,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Customer> newCustomer(@RequestBody Customer customer) {
+    public ResponseEntity newCustomer(@RequestBody Customer customer) {
         log.debug("New customer : " + customer.getCustomerName());
 
         Customer savedCustomer = customerService.newCustomer(customer);
@@ -33,7 +33,7 @@ public class CustomerController {
 
         headers.add("Location", "/api/v1/customer/" + savedCustomer.getId().toString());
 
-        return new ResponseEntity<>(savedCustomer, headers, HttpStatus.CREATED);
+        return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
     @RequestMapping(method = RequestMethod.GET)
