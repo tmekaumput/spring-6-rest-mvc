@@ -48,7 +48,6 @@ public class CustomerServiceImpl implements CustomerService {
         Customer newCustomer = Customer.builder()
                 .customerName(customer.getCustomerName())
                 .id(customerMap.size() + 1)
-                .version(1)
                 .createdDate(new Date())
                 .build();
 
@@ -57,6 +56,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     private Customer saveCustomer(Customer customer) {
         customer.setLastModifiedDate(new Date());
+        customer.setVersion(customer.getVersion() == null ? 1: customer.getVersion()+1);
         customerMap.put(customer.getId(), customer);
 
         return customer;
@@ -70,5 +70,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer getCustomerById(Integer id) {
         return customerMap.get(id);
+    }
+
+    @Override
+    public void updateCustomer(Integer id, Customer customer) {
+        Customer savedCustomer = getCustomerById(id);
+
+        savedCustomer.setCustomerName(customer.getCustomerName());
+
+        saveCustomer(savedCustomer);
     }
 }

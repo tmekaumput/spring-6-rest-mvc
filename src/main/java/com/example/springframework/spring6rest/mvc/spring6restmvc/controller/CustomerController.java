@@ -36,6 +36,15 @@ public class CustomerController {
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity updateCustomer(@PathVariable("id")Integer id,@RequestBody Customer customer) {
+        log.debug("Update customer : " + id);
+
+        customerService.updateCustomer(id, customer);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
     @RequestMapping(method = RequestMethod.GET)
     public List<Customer> getCustomers() {
         return customerService.listCustomers();
