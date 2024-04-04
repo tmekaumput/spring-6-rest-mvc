@@ -80,4 +80,9 @@ public class CustomerServiceImpl implements CustomerService {
 
         saveCustomer(savedCustomer);
     }
+
+    @Override
+    public void deleteCustomer(Integer id) {
+        customerMap.remove(id);
+    }
 }

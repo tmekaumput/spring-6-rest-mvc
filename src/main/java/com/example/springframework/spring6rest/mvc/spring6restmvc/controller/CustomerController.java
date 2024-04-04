@@ -56,4 +56,13 @@ public class CustomerController {
 
         return customerService.getCustomerById(id);
     }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity deleteCustomerById(@PathVariable("id") Integer id) {
+        log.debug("Deleting customer : " + id);
+
+        customerService.deleteCustomer(id);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }
