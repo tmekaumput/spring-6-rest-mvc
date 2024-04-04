@@ -22,4 +22,6 @@ public interface CustomerService {
     void updateCustomer(Integer id, Customer customer);
 
     void deleteCustomer(Integer id);
+
+    void patchCustomer(Integer id, Customer customer);
 }

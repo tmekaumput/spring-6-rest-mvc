@@ -8,6 +8,7 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.services;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.model.Customer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 
@@ -84,5 +85,16 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomer(Integer id) {
         customerMap.remove(id);
+    }
+
+    @Override
+    public void patchCustomer(Integer id, Customer customer) {
+        Customer existing = customerMap.get(id);
+
+        if (StringUtils.hasText(customer.getCustomerName())){
+            existing.setCustomerName(customer.getCustomerName());
+        }
+
+        saveCustomer(existing);
     }
 }

@@ -65,4 +65,13 @@ public class CustomerController {
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
+
+    @PatchMapping("{id}")
+    public ResponseEntity patchCustomerById(@PathVariable("id") Integer id, @RequestBody Customer customer) {
+        log.debug(("Patching customer : " + id));
+
+        customerService.patchCustomer(id, customer);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }
