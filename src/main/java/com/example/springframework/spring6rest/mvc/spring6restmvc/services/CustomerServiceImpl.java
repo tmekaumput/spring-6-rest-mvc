@@ -55,8 +55,7 @@ public class CustomerServiceImpl implements CustomerService {
         return saveCustomer(newCustomer);
     }
 
-    @Override
-    public Customer saveCustomer(Customer customer) {
+    private Customer saveCustomer(Customer customer) {
         customer.setLastModifiedDate(new Date());
         customerMap.put(customer.getId(), customer);
 

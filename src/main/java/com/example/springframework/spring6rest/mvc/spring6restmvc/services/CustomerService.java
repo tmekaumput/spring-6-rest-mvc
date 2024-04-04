@@ -12,7 +12,6 @@ import java.util.List;
 public interface CustomerService {
     Customer newCustomer(Customer customer);
 
-    Customer saveCustomer(Customer customer);
 
     List<Customer> listCustomers();
 
