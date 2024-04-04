@@ -27,8 +27,7 @@ public class CustomerController {
     public ResponseEntity<Customer> newCustomer(@RequestBody Customer customer) {
         log.debug("New customer : " + customer.getCustomerName());
 
-        // TODO: Create new save customer method in the customer service
-        Customer savedCustomer = customer;
+        Customer savedCustomer = customerService.newCustomer(customer);
 
         HttpHeaders headers = new HttpHeaders();
 

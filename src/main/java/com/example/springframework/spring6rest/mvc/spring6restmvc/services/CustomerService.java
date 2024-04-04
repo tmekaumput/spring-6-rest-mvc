@@ -10,6 +10,10 @@ import com.example.springframework.spring6rest.mvc.spring6restmvc.model.Customer
 import java.util.List;
 
 public interface CustomerService {
+    Customer newCustomer(Customer customer);
+
+    Customer saveCustomer(Customer customer);
+
     List<Customer> listCustomers();
 
 
