@@ -9,10 +9,10 @@ import com.example.springframework.spring6rest.mvc.spring6restmvc.model.Customer
 import com.example.springframework.spring6rest.mvc.spring6restmvc.services.CustomerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +22,18 @@ import java.util.List;
 @RequestMapping("/api/v1/customer")
 public class CustomerController {
     private final CustomerService customerService;
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Customer> newCustomer(@RequestBody Customer customer) {
+        log.debug("New customer : " + customer.getCustomerName());
+
+        // TODO: Create new save customer method in the customer service
+        Customer savedCustomer = customer;
+
+        HttpHeaders headers = new HttpHeaders();
+
+        return new ResponseEntity<>(savedCustomer, headers, HttpStatus.CREATED);
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Customer> getCustomers() {
