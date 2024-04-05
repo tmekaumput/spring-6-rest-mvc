@@ -5,5 +5,63 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.controller;
  *
  */
 
+import com.example.springframework.spring6rest.mvc.spring6restmvc.model.Customer;
+import com.example.springframework.spring6rest.mvc.spring6restmvc.services.CustomerService;
+import com.example.springframework.spring6rest.mvc.spring6restmvc.services.CustomerServiceImpl;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.List;
+
+import static org.hamcrest.core.Is.is;
+import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
+@WebMvcTest(CustomerController.class)
 public class CustomerControllerTest {
+
+    @Autowired
+    MockMvc mockMvc;
+
+    @MockBean
+    CustomerService customerService;
+
+    CustomerServiceImpl customerServiceImpl = new CustomerServiceImpl();
+    @Test
+    void getCustomerById() throws Exception{
+
+        Customer customer = customerServiceImpl.getCustomerById(1);
+        given(customerService.getCustomerById(customer.getId())).willReturn(customer);
+
+        mockMvc.perform(get("/api/v1/customer/" + customer.getId())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id", is(1)));
+
+
+    }
+
+    @Test
+    void listCustomers() throws Exception{
+
+        List<Customer> customers = customerServiceImpl.listCustomers();
+
+        given(customerService.listCustomers()).willReturn(customers);
+
+        mockMvc.perform(get("/api/v1/customer")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.length()", is(customers.size())));
+
+
+    }
 }
