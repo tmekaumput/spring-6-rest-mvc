@@ -12,6 +12,7 @@ import com.example.springframework.spring6rest.mvc.spring6restmvc.services.BeerS
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -43,6 +44,9 @@ class BeerControllerTest {
     @MockBean
     BeerService beerService;
 
+    @Captor
+    ArgumentCaptor<UUID> uuidArgumentCaptor;
+    
     BeerServiceImpl beerServiceImpl;
 
     @BeforeEach
@@ -112,7 +116,6 @@ class BeerControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
-        ArgumentCaptor<UUID> uuidArgumentCaptor = ArgumentCaptor.forClass(UUID.class);
         verify(beerService).deleteById(uuidArgumentCaptor.capture());
 
         assertThat(beer.getId()).isEqualTo(uuidArgumentCaptor.getValue());
