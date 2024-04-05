@@ -8,6 +8,7 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.controller;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.model.Customer;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.services.CustomerService;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.services.CustomerServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -33,7 +34,13 @@ public class CustomerControllerTest {
     @MockBean
     CustomerService customerService;
 
-    CustomerServiceImpl customerServiceImpl = new CustomerServiceImpl();
+    CustomerServiceImpl customerServiceImpl;
+
+    @BeforeEach
+    void setUp() {
+        customerServiceImpl = new CustomerServiceImpl();
+    }
+
     @Test
     void getCustomerById() throws Exception{
 
@@ -45,8 +52,6 @@ public class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.id", is(1)));
-
-
     }
 
     @Test
