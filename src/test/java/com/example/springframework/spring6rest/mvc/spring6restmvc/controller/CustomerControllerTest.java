@@ -8,6 +8,7 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.controller;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.model.Customer;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.services.CustomerService;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.services.CustomerServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,9 @@ import java.util.List;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -34,6 +37,9 @@ public class CustomerControllerTest {
     @MockBean
     CustomerService customerService;
 
+    @Autowired
+    ObjectMapper objectMapper;
+
     CustomerServiceImpl customerServiceImpl;
 
     @BeforeEach
@@ -41,6 +47,22 @@ public class CustomerControllerTest {
         customerServiceImpl = new CustomerServiceImpl();
     }
 
+    @Test
+    void createCustomer() throws Exception {
+        Customer customer = Customer.builder()
+                .id(1)
+                .customerName("New customer")
+                .version(1).build();
+
+        given(customerService.newCustomer(customer)).willReturn(customer);
+
+        mockMvc.perform(post("/api/v1/customer")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsBytes(customer)))
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"));
+    }
     @Test
     void getCustomerById() throws Exception{
 
