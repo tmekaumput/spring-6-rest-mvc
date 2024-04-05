@@ -26,6 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -109,5 +110,16 @@ public class CustomerControllerTest {
                 .andExpect(jsonPath("$.length()", is(customers.size())));
 
 
+    }
+
+    @Test
+    void deleteCustomer() throws Exception {
+        Customer customer = Customer.builder().id(1).build();
+
+        mockMvc.perform(delete("/api/v1/customer/" + customer.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        verify(customerService).deleteCustomer(any(Integer.class));
     }
 }
