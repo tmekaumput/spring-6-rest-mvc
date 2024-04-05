@@ -12,12 +12,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -29,6 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,12 +49,11 @@ public class CustomerControllerTest {
     @Autowired
     ObjectMapper objectMapper;
 
-    CustomerServiceImpl customerServiceImpl;
+    @Captor
+    ArgumentCaptor<Integer> argumentCaptorId;
 
-    @BeforeEach
-    void setUp() {
-        customerServiceImpl = new CustomerServiceImpl();
-    }
+    @Captor
+    ArgumentCaptor<Customer> argumentCaptorCustomer;
 
     @Test
     void createCustomer() throws Exception {
@@ -68,6 +70,9 @@ public class CustomerControllerTest {
                 .content(objectMapper.writeValueAsBytes(customer)))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"));
+
+        verify(customerService).newCustomer(argumentCaptorCustomer.capture());
+        assertThat(customer.getId()).isEqualTo(argumentCaptorCustomer.getValue().getId());
     }
 
     @Test
@@ -83,12 +88,37 @@ public class CustomerControllerTest {
                         .content(objectMapper.writeValueAsBytes(customer)))
                 .andExpect(status().isNoContent());
 
-        verify(customerService).updateCustomer(any(Integer.class), any(Customer.class));
+        verify(customerService).updateCustomer(argumentCaptorId.capture(), argumentCaptorCustomer.capture());
+        assertThat(customer.getId()).isEqualTo(argumentCaptorId.getValue());
+        assertThat(customer.getCustomerName()).isEqualTo(argumentCaptorCustomer.getValue().getCustomerName());
     }
+
+    @Test
+    void patchCustomer() throws Exception {
+        Customer customer = Customer.builder()
+                .id(1)
+                .customerName("Patched customer")
+                .version(2).build();
+
+        mockMvc.perform(patch("/api/v1/customer/" + customer.getId())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(customer)))
+                .andExpect(status().isNoContent());
+
+        verify(customerService).patchCustomer(argumentCaptorId.capture(), argumentCaptorCustomer.capture());
+        assertThat(customer.getId()).isEqualTo(argumentCaptorId.getValue());
+        assertThat(customer.getCustomerName()).isEqualTo(argumentCaptorCustomer.getValue().getCustomerName());
+    }
+
     @Test
     void getCustomerById() throws Exception{
 
-        Customer customer = customerServiceImpl.getCustomerById(1);
+        Customer customer = Customer.builder()
+                .id(1)
+                .customerName("New customer")
+                .version(1).build();
+
         given(customerService.getCustomerById(customer.getId())).willReturn(customer);
 
         mockMvc.perform(get("/api/v1/customer/" + customer.getId())
@@ -101,7 +131,26 @@ public class CustomerControllerTest {
     @Test
     void listCustomers() throws Exception{
 
-        List<Customer> customers = customerServiceImpl.listCustomers();
+        List<Customer> customers = new ArrayList<>();
+
+        Customer c1 = Customer.builder()
+                .id(1)
+                .customerName("C1")
+                .version(1).build();
+
+        Customer c2 = Customer.builder()
+                .id(1)
+                .customerName("C2")
+                .version(1).build();
+
+        Customer c3 = Customer.builder()
+                .id(1)
+                .customerName("C3")
+                .version(1).build();
+
+        customers.add(c1);
+        customers.add(c2);
+        customers.add(c3);
 
         given(customerService.listCustomers()).willReturn(customers);
 
@@ -122,9 +171,8 @@ public class CustomerControllerTest {
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
-        ArgumentCaptor<Integer> argumentCaptor = ArgumentCaptor.forClass(Integer.class);
-        verify(customerService).deleteCustomer(argumentCaptor.capture());
+        verify(customerService).deleteCustomer(argumentCaptorId.capture());
 
-        assertThat(customer.getId()).isEqualTo(argumentCaptor.getValue());
+        assertThat(customer.getId()).isEqualTo(argumentCaptorId.getValue());
     }
 }
