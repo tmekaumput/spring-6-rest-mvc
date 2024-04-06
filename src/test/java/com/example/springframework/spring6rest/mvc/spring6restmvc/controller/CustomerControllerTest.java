@@ -129,6 +129,14 @@ public class CustomerControllerTest {
     }
 
     @Test
+    void getCustomerByIdNotFound() throws Exception {
+
+        given(customerService.getCustomerById(any(Integer.class))).willThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/api/v1/customer/" + 100)).andExpect(status().isNotFound());
+    }
+
+    @Test
     void listCustomers() throws Exception{
 
         List<Customer> customers = new ArrayList<>();
