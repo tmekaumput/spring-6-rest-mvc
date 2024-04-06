@@ -57,6 +57,11 @@ public class BeerController {
         return beerService.getBeerById(beerId);
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity handleNotFoundError() {
+        return ResponseEntity.notFound().build();
+    }
+
     @DeleteMapping("{beerId}")
     public ResponseEntity deleteById(@PathVariable("beerId") UUID beerId){
 
