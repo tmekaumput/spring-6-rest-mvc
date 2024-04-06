@@ -5,14 +5,13 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.controller;
  *
  */
 
-import com.example.springframework.spring6rest.mvc.spring6restmvc.model.Beer;
+import com.example.springframework.spring6rest.mvc.spring6restmvc.model.BeerDTO;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.services.BeerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,18 +26,18 @@ public class BeerController {
 
     @PostMapping
     //@RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Beer> handlePost(@RequestBody Beer beer){
+    public ResponseEntity<BeerDTO> handlePost(@RequestBody BeerDTO beer){
 
-        Beer savedBeer = beerService.saveNewBeer(beer);
+        BeerDTO savedBeer = beerService.saveNewBeer(beer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beer/" + savedBeer.getId().toString());
 
-        return new ResponseEntity<Beer>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<BeerDTO>(headers, HttpStatus.CREATED);
     }
 
     @PutMapping("{beerId}")
-    public ResponseEntity updateById(@PathVariable("beerId")UUID beerId, @RequestBody Beer beer){
+    public ResponseEntity updateById(@PathVariable("beerId")UUID beerId, @RequestBody BeerDTO beer){
 
         beerService.updateBeerById(beerId, beer);
 
@@ -46,12 +45,12 @@ public class BeerController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Beer> listBeers() {
+    public List<BeerDTO> listBeers() {
         return beerService.listBeers();
     }
 
     @RequestMapping(value = "{beerId}", method = RequestMethod.GET)
-    public Beer getBeerById(@PathVariable("beerId") UUID beerId) {
+    public BeerDTO getBeerById(@PathVariable("beerId") UUID beerId) {
         log.debug("Get Beer by Id - in controller");
 
         return beerService.getBeerById(beerId).orElseThrow(NotFoundException::new);
@@ -71,7 +70,7 @@ public class BeerController {
     }
 
     @PatchMapping("{beerId}")
-    public ResponseEntity updateBeerPatchById(@PathVariable("beerId")UUID beerId, @RequestBody Beer beer){
+    public ResponseEntity updateBeerPatchById(@PathVariable("beerId")UUID beerId, @RequestBody BeerDTO beer){
 
         beerService.patchBeerById(beerId, beer);
 

@@ -5,7 +5,7 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.controller;
  *
  */
 
-import com.example.springframework.spring6rest.mvc.spring6restmvc.model.Customer;
+import com.example.springframework.spring6rest.mvc.spring6restmvc.model.CustomerDTO;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.services.CustomerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +24,10 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity newCustomer(@RequestBody Customer customer) {
+    public ResponseEntity newCustomer(@RequestBody CustomerDTO customer) {
         log.debug("New customer : " + customer.getCustomerName());
 
-        Customer savedCustomer = customerService.newCustomer(customer);
+        CustomerDTO savedCustomer = customerService.newCustomer(customer);
 
         HttpHeaders headers = new HttpHeaders();
 
@@ -37,7 +37,7 @@ public class CustomerController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity updateCustomer(@PathVariable("id")Integer id,@RequestBody Customer customer) {
+    public ResponseEntity updateCustomer(@PathVariable("id")Integer id,@RequestBody CustomerDTO customer) {
         log.debug("Update customer : " + id);
 
         customerService.updateCustomer(id, customer);
@@ -46,12 +46,12 @@ public class CustomerController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Customer> getCustomers() {
+    public List<CustomerDTO> getCustomers() {
         return customerService.listCustomers();
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "{id}")
-    public Customer getCustomerById(@PathVariable("id") Integer id) {
+    public CustomerDTO getCustomerById(@PathVariable("id") Integer id) {
         log.debug("Retrieving customer : " + id);
 
         return customerService.getCustomerById(id).orElseThrow(NotFoundException::new);
@@ -67,7 +67,7 @@ public class CustomerController {
     }
 
     @PatchMapping("{id}")
-    public ResponseEntity patchCustomerById(@PathVariable("id") Integer id, @RequestBody Customer customer) {
+    public ResponseEntity patchCustomerById(@PathVariable("id") Integer id, @RequestBody CustomerDTO customer) {
         log.debug(("Patching customer : " + id));
 
         customerService.patchCustomer(id, customer);

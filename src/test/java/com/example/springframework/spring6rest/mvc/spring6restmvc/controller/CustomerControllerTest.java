@@ -5,11 +5,9 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.controller;
  *
  */
 
-import com.example.springframework.spring6rest.mvc.spring6restmvc.model.Customer;
+import com.example.springframework.spring6rest.mvc.spring6restmvc.model.CustomerDTO;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.services.CustomerService;
-import com.example.springframework.spring6rest.mvc.spring6restmvc.services.CustomerServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -54,11 +52,11 @@ public class CustomerControllerTest {
     ArgumentCaptor<Integer> argumentCaptorId;
 
     @Captor
-    ArgumentCaptor<Customer> argumentCaptorCustomer;
+    ArgumentCaptor<CustomerDTO> argumentCaptorCustomer;
 
     @Test
     void createCustomer() throws Exception {
-        Customer customer = Customer.builder()
+        CustomerDTO customer = CustomerDTO.builder()
                 .id(1)
                 .customerName("New customer")
                 .version(1).build();
@@ -78,7 +76,7 @@ public class CustomerControllerTest {
 
     @Test
     void updateCustomer() throws Exception {
-        Customer customer = Customer.builder()
+        CustomerDTO customer = CustomerDTO.builder()
                 .id(1)
                 .customerName("Updated customer")
                 .version(2).build();
@@ -96,7 +94,7 @@ public class CustomerControllerTest {
 
     @Test
     void patchCustomer() throws Exception {
-        Customer customer = Customer.builder()
+        CustomerDTO customer = CustomerDTO.builder()
                 .id(1)
                 .customerName("Patched customer")
                 .version(2).build();
@@ -115,7 +113,7 @@ public class CustomerControllerTest {
     @Test
     void getCustomerById() throws Exception{
 
-        Customer customer = Customer.builder()
+        CustomerDTO customer = CustomerDTO.builder()
                 .id(1)
                 .customerName("New customer")
                 .version(1).build();
@@ -140,19 +138,19 @@ public class CustomerControllerTest {
     @Test
     void listCustomers() throws Exception{
 
-        List<Customer> customers = new ArrayList<>();
+        List<CustomerDTO> customers = new ArrayList<>();
 
-        Customer c1 = Customer.builder()
+        CustomerDTO c1 = CustomerDTO.builder()
                 .id(1)
                 .customerName("C1")
                 .version(1).build();
 
-        Customer c2 = Customer.builder()
+        CustomerDTO c2 = CustomerDTO.builder()
                 .id(1)
                 .customerName("C2")
                 .version(1).build();
 
-        Customer c3 = Customer.builder()
+        CustomerDTO c3 = CustomerDTO.builder()
                 .id(1)
                 .customerName("C3")
                 .version(1).build();
@@ -174,7 +172,7 @@ public class CustomerControllerTest {
 
     @Test
     void deleteCustomer() throws Exception {
-        Customer customer = Customer.builder().id(1).build();
+        CustomerDTO customer = CustomerDTO.builder().id(1).build();
 
         mockMvc.perform(delete("/api/v1/customer/" + customer.getId())
                         .accept(MediaType.APPLICATION_JSON))

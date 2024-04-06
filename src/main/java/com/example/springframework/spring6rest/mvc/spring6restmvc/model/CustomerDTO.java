@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Builder
 @Data
-public class Customer {
+public class CustomerDTO {
     private Integer id;
     private String customerName;
     private Integer version;

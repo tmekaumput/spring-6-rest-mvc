@@ -5,24 +5,24 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.services;
  *
  */
 
-import com.example.springframework.spring6rest.mvc.spring6restmvc.model.Customer;
+import com.example.springframework.spring6rest.mvc.spring6restmvc.model.CustomerDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CustomerService {
-    Customer newCustomer(Customer customer);
+    CustomerDTO newCustomer(CustomerDTO customer);
 
 
-    List<Customer> listCustomers();
+    List<CustomerDTO> listCustomers();
 
 
 
-    Optional<Customer> getCustomerById(Integer id);
+    Optional<CustomerDTO> getCustomerById(Integer id);
 
-    void updateCustomer(Integer id, Customer customer);
+    void updateCustomer(Integer id, CustomerDTO customer);
 
     void deleteCustomer(Integer id);
 
-    void patchCustomer(Integer id, Customer customer);
+    void patchCustomer(Integer id, CustomerDTO customer);
 }
