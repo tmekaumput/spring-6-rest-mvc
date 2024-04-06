@@ -21,6 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -119,7 +120,7 @@ public class CustomerControllerTest {
                 .customerName("New customer")
                 .version(1).build();
 
-        given(customerService.getCustomerById(customer.getId())).willReturn(customer);
+        given(customerService.getCustomerById(customer.getId())).willReturn(Optional.of(customer));
 
         mockMvc.perform(get("/api/v1/customer/" + customer.getId())
                 .accept(MediaType.APPLICATION_JSON))
@@ -131,7 +132,7 @@ public class CustomerControllerTest {
     @Test
     void getCustomerByIdNotFound() throws Exception {
 
-        given(customerService.getCustomerById(any(Integer.class))).willThrow(NotFoundException.class);
+        given(customerService.getCustomerById(any(Integer.class))).willReturn(Optional.empty());
 
         mockMvc.perform(get("/api/v1/customer/" + 100)).andExpect(status().isNotFound());
     }

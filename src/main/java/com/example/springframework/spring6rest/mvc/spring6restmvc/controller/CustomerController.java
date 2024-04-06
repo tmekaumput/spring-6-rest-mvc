@@ -54,7 +54,7 @@ public class CustomerController {
     public Customer getCustomerById(@PathVariable("id") Integer id) {
         log.debug("Retrieving customer : " + id);
 
-        return customerService.getCustomerById(id);
+        return customerService.getCustomerById(id).orElseThrow(NotFoundException::new);
     }
 
     @DeleteMapping("{id}")

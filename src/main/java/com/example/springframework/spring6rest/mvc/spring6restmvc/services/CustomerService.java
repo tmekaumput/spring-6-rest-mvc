@@ -8,6 +8,7 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.services;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.model.Customer;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerService {
     Customer newCustomer(Customer customer);
@@ -17,7 +18,7 @@ public interface CustomerService {
 
 
 
-    Customer getCustomerById(Integer id);
+    Optional<Customer> getCustomerById(Integer id);
 
     void updateCustomer(Integer id, Customer customer);
 

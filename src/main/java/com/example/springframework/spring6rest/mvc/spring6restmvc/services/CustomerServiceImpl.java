@@ -69,17 +69,19 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getCustomerById(Integer id) {
-        return customerMap.get(id);
+    public Optional<Customer> getCustomerById(Integer id) {
+        return Optional.of(customerMap.get(id));
     }
 
     @Override
     public void updateCustomer(Integer id, Customer customer) {
-        Customer savedCustomer = getCustomerById(id);
+        Customer savedCustomer = getCustomerById(id).orElse(null);
 
-        savedCustomer.setCustomerName(customer.getCustomerName());
+        if(savedCustomer != null) {
+            savedCustomer.setCustomerName(customer.getCustomerName());
 
-        saveCustomer(savedCustomer);
+            saveCustomer(savedCustomer);
+        }
     }
 
     @Override
