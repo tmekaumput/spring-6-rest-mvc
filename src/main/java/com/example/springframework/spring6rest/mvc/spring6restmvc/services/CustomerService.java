@@ -20,9 +20,9 @@ public interface CustomerService {
 
     Optional<CustomerDTO> getCustomerById(Integer id);
 
-    void updateCustomer(Integer id, CustomerDTO customer);
+    Optional<CustomerDTO> updateCustomer(Integer id, CustomerDTO customer);
 
-    void deleteCustomer(Integer id);
+    Boolean deleteCustomer(Integer id);
 
-    void patchCustomer(Integer id, CustomerDTO customer);
+    Optional<CustomerDTO> patchCustomer(Integer id, CustomerDTO customer);
 }

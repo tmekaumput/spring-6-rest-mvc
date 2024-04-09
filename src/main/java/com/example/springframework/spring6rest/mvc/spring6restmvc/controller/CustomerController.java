@@ -40,7 +40,9 @@ public class CustomerController {
     public ResponseEntity updateCustomer(@PathVariable("id")Integer id,@RequestBody CustomerDTO customer) {
         log.debug("Update customer : " + id);
 
-        customerService.updateCustomer(id, customer);
+        if(customerService.updateCustomer(id, customer).isEmpty()) {
+            throw new NotFoundException();
+        };
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -61,7 +63,9 @@ public class CustomerController {
     public ResponseEntity deleteCustomerById(@PathVariable("id") Integer id) {
         log.debug("Deleting customer : " + id);
 
-        customerService.deleteCustomer(id);
+        if(!customerService.deleteCustomer(id)) {
+            throw new NotFoundException();
+        };
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -70,7 +74,9 @@ public class CustomerController {
     public ResponseEntity patchCustomerById(@PathVariable("id") Integer id, @RequestBody CustomerDTO customer) {
         log.debug(("Patching customer : " + id));
 
-        customerService.patchCustomer(id, customer);
+        if(customerService.patchCustomer(id, customer).isEmpty()) {
+            throw new NotFoundException();
+        };
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

@@ -74,7 +74,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomer(Integer id, CustomerDTO customer) {
+    public Optional<CustomerDTO> updateCustomer(Integer id, CustomerDTO customer) {
         CustomerDTO savedCustomer = getCustomerById(id).orElse(null);
 
         if(savedCustomer != null) {
@@ -82,15 +82,19 @@ public class CustomerServiceImpl implements CustomerService {
 
             saveCustomer(savedCustomer);
         }
+
+        return Optional.of(savedCustomer);
     }
 
     @Override
-    public void deleteCustomer(Integer id) {
+    public Boolean deleteCustomer(Integer id) {
         customerMap.remove(id);
+
+        return true;
     }
 
     @Override
-    public void patchCustomer(Integer id, CustomerDTO customer) {
+    public Optional<CustomerDTO> patchCustomer(Integer id, CustomerDTO customer) {
         CustomerDTO existing = customerMap.get(id);
 
         if (StringUtils.hasText(customer.getCustomerName())){
@@ -98,5 +102,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         saveCustomer(existing);
+
+        return Optional.of(existing);
     }
 }

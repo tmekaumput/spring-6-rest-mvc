@@ -81,6 +81,8 @@ public class CustomerControllerTest {
                 .customerName("Updated customer")
                 .version(2).build();
 
+        given(customerService.updateCustomer(any(), any())).willReturn(Optional.of(customer));
+
         mockMvc.perform(put("/api/v1/customer/" + customer.getId())
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -98,6 +100,8 @@ public class CustomerControllerTest {
                 .id(1)
                 .customerName("Patched customer")
                 .version(2).build();
+
+        given(customerService.patchCustomer(any(), any())).willReturn(Optional.of(customer));
 
         mockMvc.perform(patch("/api/v1/customer/" + customer.getId())
                         .accept(MediaType.APPLICATION_JSON)
@@ -173,6 +177,8 @@ public class CustomerControllerTest {
     @Test
     void deleteCustomer() throws Exception {
         CustomerDTO customer = CustomerDTO.builder().id(1).build();
+
+        given(customerService.deleteCustomer(any())).willReturn(true);
 
         mockMvc.perform(delete("/api/v1/customer/" + customer.getId())
                         .accept(MediaType.APPLICATION_JSON))
