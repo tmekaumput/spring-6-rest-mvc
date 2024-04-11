@@ -38,8 +38,8 @@ public class Beer {
 
     @NotNull
     @NotBlank
-    @Size(max = 10)
-    @Column(length = 10)
+    @Size(max = 50)
+    @Column(length = 50)
     private String beerName;
 
     @NotNull
