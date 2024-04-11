@@ -215,6 +215,25 @@ class BeerControllerTest {
         System.out.println(mvcResult.getResponse().getContentAsString());
     }
 
+
+    @Test
+    void patchBeerTooLongBeerName() throws Exception {
+        BeerDTO beer = beerServiceImpl.listBeers().get(0);
+
+        given(beerService.patchBeerById(any(), any())).willReturn(Optional.of(beer));
+
+        Map<String, Object> beerMap = new HashMap<>();
+        beerMap.put("beerName", "New Name 123456789012345678901234567890123456789012345678901234567890");
+
+        MvcResult mvcResult =  mockMvc.perform(patch("/api/v1/beer/" + beer.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(beerMap)))
+                .andExpect(status().isBadRequest()).andReturn();
+
+        System.out.println(mvcResult.getResponse().getContentAsString());
+    }
+
     @Test
     void listBeers() throws Exception {
         given(beerService.listBeers()).willReturn(beerServiceImpl.listBeers());
