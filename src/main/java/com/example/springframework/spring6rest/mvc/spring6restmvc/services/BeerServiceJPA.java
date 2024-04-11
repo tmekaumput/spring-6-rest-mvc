@@ -42,7 +42,7 @@ public class BeerServiceJPA implements BeerService {
 
     @Override
     public BeerDTO saveNewBeer(BeerDTO beer) {
-        return beerMapper.beerToBeerDto(beerRepository.save(beerMapper.beerDtoToBeer(beer)));
+        return beerMapper.beerToBeerDto(beerRepository.saveAndFlush(beerMapper.beerDtoToBeer(beer)));
     }
 
     @Override
@@ -55,7 +55,7 @@ public class BeerServiceJPA implements BeerService {
             foundBeer.setPrice(beer.getPrice());
             foundBeer.setQuantityOnHand(beer.getQuantityOnHand());
             foundBeer.setUpc(beer.getUpc());
-            atomicReference.set(Optional.of(beerMapper.beerToBeerDto(beerRepository.save(foundBeer))));
+            atomicReference.set(Optional.of(beerMapper.beerToBeerDto(beerRepository.saveAndFlush(foundBeer))));
         }, () -> atomicReference.set(Optional.empty()));
 
         return atomicReference.get();
@@ -92,7 +92,7 @@ public class BeerServiceJPA implements BeerService {
                 foundBeer.setUpc(beer.getUpc());
             }
 
-            atomicReference.set(Optional.of(beerMapper.beerToBeerDto(beerRepository.save(foundBeer))));
+            atomicReference.set(Optional.of(beerMapper.beerToBeerDto(beerRepository.saveAndFlush(foundBeer))));
         }, () ->  atomicReference.set(Optional.empty()));
 
         return atomicReference.get();
