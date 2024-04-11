@@ -5,10 +5,10 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.entities;
  *
  */
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Version;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,6 +40,10 @@ public class Customer {
     @Version
     private Integer version;
 
+    @NotNull
+    @NotBlank
+    @Size(max = 255)
+    @Column(length = 255)
     private String customerName;
     private Date createdDate;
     private Date lastModifiedDate;

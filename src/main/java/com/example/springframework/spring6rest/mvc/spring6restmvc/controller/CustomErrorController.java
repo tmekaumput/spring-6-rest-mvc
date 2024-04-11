@@ -5,7 +5,9 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.controller;
  *
  */
 
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,6 +19,20 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class CustomErrorController {
+
+    @ExceptionHandler
+    ResponseEntity handleJpaValidationError(ConstraintViolationException exception) {
+        ResponseEntity.BodyBuilder responseEntity = ResponseEntity.badRequest();
+        List errors = exception.getConstraintViolations().stream()
+                .map(constraintViolation -> {
+                    Map<String, String> errMap = new HashMap<>();
+                    errMap.put(constraintViolation.getPropertyPath().toString(),
+                    constraintViolation.getMessage());
+                    return errMap;
+                }).collect(Collectors.toList());
+
+        return responseEntity.body(errors);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity handleBindErrors(MethodArgumentNotValidException exception) {

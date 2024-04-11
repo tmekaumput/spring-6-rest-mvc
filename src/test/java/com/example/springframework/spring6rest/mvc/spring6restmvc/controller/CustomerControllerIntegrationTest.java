@@ -5,6 +5,7 @@ import com.example.springframework.spring6rest.mvc.spring6restmvc.mappers.Custom
 import com.example.springframework.spring6rest.mvc.spring6restmvc.model.CustomerDTO;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.repositories.CustomerRepository;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -41,6 +42,31 @@ class CustomerControllerIntegrationTest {
 
         assertThat(customers.size()).isEqualTo(3);
 
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void createCustomer() {
+        CustomerDTO customerDTO = CustomerDTO.builder()
+                .customerName("New customer")
+                .build();
+
+        ResponseEntity responseEntity = customerController.newCustomer(customerDTO);
+
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
+        assertThat(responseEntity.getHeaders().getLocation()).isNotNull();
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void createCustomerTooLongName() {
+        CustomerDTO customerDTO = CustomerDTO.builder()
+                .customerName("New customer 1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890")
+                .build();
+
+        assertThrows(ConstraintViolationException.class, () -> customerController.newCustomer(customerDTO));
     }
 
     @Test

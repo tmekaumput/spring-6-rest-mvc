@@ -5,6 +5,8 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.model;
  *
  */
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,9 +15,14 @@ import java.util.Date;
 @Builder
 @Data
 public class CustomerDTO {
+
     private Integer id;
-    private String customerName;
     private Integer version;
+
+    @NotBlank
+    @NotNull
+    private String customerName;
+
     private Date createdDate;
     private Date lastModifiedDate;
 }

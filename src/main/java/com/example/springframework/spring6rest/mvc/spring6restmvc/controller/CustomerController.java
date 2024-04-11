@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity newCustomer(@RequestBody CustomerDTO customer) {
+    public ResponseEntity newCustomer(@Validated  @RequestBody CustomerDTO customer) {
         log.debug("New customer : " + customer.getCustomerName());
 
         CustomerDTO savedCustomer = customerService.newCustomer(customer);
@@ -37,7 +38,7 @@ public class CustomerController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity updateCustomer(@PathVariable("id")Integer id,@RequestBody CustomerDTO customer) {
+    public ResponseEntity updateCustomer(@PathVariable("id")Integer id,@Validated @RequestBody CustomerDTO customer) {
         log.debug("Update customer : " + id);
 
         if(customerService.updateCustomer(id, customer).isEmpty()) {
