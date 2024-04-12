@@ -105,7 +105,7 @@ class BeerControllerIntegrationTest {
         BeerDTO beer = BeerDTO.builder()
                 .beerName(beerName)
                 .beerStyle(BeerStyle.LAGER)
-                .upc("")
+                .upc("123456")
                 .price(new BigDecimal("1.00"))
                 .build();
 
