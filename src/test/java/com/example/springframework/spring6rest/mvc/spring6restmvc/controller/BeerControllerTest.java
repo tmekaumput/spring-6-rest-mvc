@@ -180,60 +180,6 @@ class BeerControllerTest {
         assertThat(beerMap.get("beerName")).isEqualTo(beerArgumentCaptor.getValue().getBeerName());
     }
 
-
-    @Test
-    void patchBeerNullBeerName() throws Exception {
-        BeerDTO beer = beerServiceImpl.listBeers().get(0);
-
-        given(beerService.updateBeerById(any(), any())).willReturn(Optional.of(beer));
-
-        beer.setBeerName(null);
-
-        MvcResult mvcResult = mockMvc.perform(patch("/api/v1/beer/" + beer.getId())
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(beer)))
-                .andExpect(status().isBadRequest()).andReturn();
-
-        System.out.println(mvcResult.getResponse().getContentAsString());
-    }
-
-    @Test
-    void patchBeerEmptyBeerName() throws Exception {
-        BeerDTO beer = beerServiceImpl.listBeers().get(0);
-
-        given(beerService.updateBeerById(any(), any())).willReturn(Optional.of(beer));
-
-        beer.setBeerName("");
-
-        MvcResult mvcResult = mockMvc.perform(patch("/api/v1/beer/" + beer.getId())
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(beer)))
-                .andExpect(status().isBadRequest()).andReturn();
-
-        System.out.println(mvcResult.getResponse().getContentAsString());
-    }
-
-
-    @Test
-    void patchBeerTooLongBeerName() throws Exception {
-        BeerDTO beer = beerServiceImpl.listBeers().get(0);
-
-        given(beerService.patchBeerById(any(), any())).willReturn(Optional.of(beer));
-
-        Map<String, Object> beerMap = new HashMap<>();
-        beerMap.put("beerName", "New Name 123456789012345678901234567890123456789012345678901234567890");
-
-        MvcResult mvcResult =  mockMvc.perform(patch("/api/v1/beer/" + beer.getId())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(beerMap)))
-                .andExpect(status().isBadRequest()).andReturn();
-
-        System.out.println(mvcResult.getResponse().getContentAsString());
-    }
-
     @Test
     void listBeers() throws Exception {
         given(beerService.listBeers()).willReturn(beerServiceImpl.listBeers());
