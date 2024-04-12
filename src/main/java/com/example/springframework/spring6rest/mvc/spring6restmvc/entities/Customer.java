@@ -45,6 +45,10 @@ public class Customer {
     @Size(max = 255)
     @Column(length = 255)
     private String customerName;
+
+    @Column(length = 255)
+    private String email;
+
     private Date createdDate;
     private Date lastModifiedDate;
 }
