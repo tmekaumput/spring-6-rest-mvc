@@ -5,7 +5,6 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.services;
  *
  */
 
-import com.example.springframework.spring6rest.mvc.spring6restmvc.entities.Beer;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.mappers.BeerMapper;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.model.BeerDTO;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.repositories.BeerRepository;
@@ -28,7 +27,7 @@ public class BeerServiceJPA implements BeerService {
     private final BeerMapper beerMapper;
 
     @Override
-    public List<BeerDTO> listBeers() {
+    public List<BeerDTO> listBeers(String beerName) {
         return beerRepository.findAll()
                 .stream()
                 .map(beerMapper::beerToBeerDto)

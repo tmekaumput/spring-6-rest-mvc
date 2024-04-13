@@ -23,13 +23,11 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.math.BigDecimal;
 import java.util.*;
-import java.util.regex.Pattern;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -67,7 +65,7 @@ class BeerControllerIntegrationTest {
 
     @Test
     void listAllBeers() {
-        List<BeerDTO> beers = beerController.listBeers();
+        List<BeerDTO> beers = beerController.listBeers(null);
 
         assertThat(beers.size()).isEqualTo(2413);
     }
@@ -78,14 +76,14 @@ class BeerControllerIntegrationTest {
     void emptyList() {
         beerRepository.deleteAll();
 
-        List<BeerDTO> beers = beerController.listBeers();
+        List<BeerDTO> beers = beerController.listBeers(null);
 
         assertThat(beers.size()).isEqualTo(0);
     }
 
     @Test
     void getBeerById() {
-        BeerDTO beer = beerController.listBeers().get(0);
+        BeerDTO beer = beerController.listBeers(null).get(0);
 
         assertThat(beer).isNotNull();
     }
