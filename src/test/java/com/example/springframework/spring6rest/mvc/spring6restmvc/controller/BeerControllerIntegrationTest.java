@@ -101,6 +101,13 @@ class BeerControllerIntegrationTest {
     }
 
     @Test
+    void listBeersByNameAndStyle() {
+        List<BeerDTO> beers = beerController.listBeers("Shift", BeerStyle.LAGER, false);
+
+        assertThat(beers.size()).isEqualTo(3);
+    }
+
+    @Test
     @Rollback
     @Transactional
     void emptyList() {
