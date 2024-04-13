@@ -65,16 +65,23 @@ class BeerControllerIntegrationTest {
 
     @Test
     void listAllBeers() {
-        List<BeerDTO> beers = beerController.listBeers(null);
+        List<BeerDTO> beers = beerController.listBeers(null, null);
 
         assertThat(beers.size()).isEqualTo(2413);
     }
 
     @Test
     void listBeersByName() {
-        List<BeerDTO> beers = beerController.listBeers("IPA");
+        List<BeerDTO> beers = beerController.listBeers("IPA", null);
 
         assertThat(beers.size()).isEqualTo(336);
+    }
+
+    @Test
+    void listBeersByStyle() {
+        List<BeerDTO> beers = beerController.listBeers(null, BeerStyle.LAGER);
+
+        assertThat(beers.size()).isEqualTo(39);
     }
 
     @Test
@@ -83,14 +90,14 @@ class BeerControllerIntegrationTest {
     void emptyList() {
         beerRepository.deleteAll();
 
-        List<BeerDTO> beers = beerController.listBeers(null);
+        List<BeerDTO> beers = beerController.listBeers(null, null);
 
         assertThat(beers.size()).isEqualTo(0);
     }
 
     @Test
     void getBeerById() {
-        BeerDTO beer = beerController.listBeers(null).get(0);
+        BeerDTO beer = beerController.listBeers(null, null).get(0);
 
         assertThat(beer).isNotNull();
     }
