@@ -7,6 +7,9 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.bootstrap;
 
 import com.example.springframework.spring6rest.mvc.spring6restmvc.repositories.BeerRepository;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.repositories.CustomerRepository;
+import com.example.springframework.spring6rest.mvc.spring6restmvc.services.BeerCsvService;
+import com.example.springframework.spring6rest.mvc.spring6restmvc.services.BeerCsvServiceImpl;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,18 +26,30 @@ public class DataLoaderTest {
     @Autowired
     CustomerRepository customerRepository;
 
+
+    BeerCsvService beerCsvService = new BeerCsvServiceImpl();
+
     DataLoader dataLoader;
 
     @BeforeEach
     void setUp() {
-        dataLoader = new DataLoader(beerRepository, customerRepository);
+        beerRepository.deleteAll();
+        customerRepository.deleteAll();
+
+        dataLoader = new DataLoader(beerRepository, customerRepository, beerCsvService);
     }
 
     @Test
     void loadData() throws Exception {
         dataLoader.run(null);
 
-        assertThat(beerRepository.count()).isEqualTo(3);
+        assertThat(beerRepository.count()).isEqualTo(2413);
         assertThat(customerRepository.count()).isEqualTo(3);
+    }
+
+    @AfterEach
+    void tearDown() {
+        beerRepository.deleteAll();
+        customerRepository.deleteAll();
     }
 }
