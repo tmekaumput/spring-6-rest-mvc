@@ -71,6 +71,13 @@ class BeerControllerIntegrationTest {
     }
 
     @Test
+    void listBeersByName() {
+        List<BeerDTO> beers = beerController.listBeers("IPA");
+
+        assertThat(beers.size()).isEqualTo(336);
+    }
+
+    @Test
     @Rollback
     @Transactional
     void emptyList() {
