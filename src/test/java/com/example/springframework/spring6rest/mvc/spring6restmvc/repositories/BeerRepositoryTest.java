@@ -65,4 +65,11 @@ public class BeerRepositoryTest {
 
         assertThat(list.size()).isEqualTo(336);
     }
+
+    @Test
+    void findBeersByStyle() {
+        List<Beer> list = beerRepository.findAllByBeerStyle(BeerStyle.LAGER);
+
+        assertThat(list.size()).isEqualTo(39);
+    }
 }
