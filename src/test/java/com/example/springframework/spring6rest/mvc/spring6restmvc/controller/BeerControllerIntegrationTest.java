@@ -65,21 +65,21 @@ class BeerControllerIntegrationTest {
 
     @Test
     void listAllBeers() {
-        List<BeerDTO> beers = beerController.listBeers(null, null, false);
+        List<BeerDTO> beers = beerController.listBeers(null, null, false, null, null);
 
         assertThat(beers.size()).isEqualTo(2413);
     }
 
     @Test
     void listBeersByName() {
-        List<BeerDTO> beers = beerController.listBeers("IPA", null, false);
+        List<BeerDTO> beers = beerController.listBeers("IPA", null, false, null, null);
 
         assertThat(beers.size()).isEqualTo(336);
     }
 
     @Test
     void listBeersByNameWithoutInventory() {
-        List<BeerDTO> beers = beerController.listBeers("IPA", null, false);
+        List<BeerDTO> beers = beerController.listBeers("IPA", null, false, null, null);
 
         assertThat(beers.size()).isEqualTo(336);
         assertThat(beers.get(0).getQuantityOnHand()).isNull();
@@ -87,7 +87,7 @@ class BeerControllerIntegrationTest {
 
     @Test
     void listBeersByNameWithInventory() {
-        List<BeerDTO> beers = beerController.listBeers("IPA", null, true);
+        List<BeerDTO> beers = beerController.listBeers("IPA", null, true, null, null);
 
         assertThat(beers.size()).isEqualTo(336);
         assertThat(beers.get(0).getQuantityOnHand()).isNotNull();
@@ -95,14 +95,14 @@ class BeerControllerIntegrationTest {
 
     @Test
     void listBeersByStyle() {
-        List<BeerDTO> beers = beerController.listBeers(null, BeerStyle.LAGER, false);
+        List<BeerDTO> beers = beerController.listBeers(null, BeerStyle.LAGER, false, null, null);
 
         assertThat(beers.size()).isEqualTo(39);
     }
 
     @Test
     void listBeersByNameAndStyle() {
-        List<BeerDTO> beers = beerController.listBeers("Shift", BeerStyle.LAGER, false);
+        List<BeerDTO> beers = beerController.listBeers("Shift", BeerStyle.LAGER, false, null, null);
 
         assertThat(beers.size()).isEqualTo(3);
     }
@@ -113,14 +113,14 @@ class BeerControllerIntegrationTest {
     void emptyList() {
         beerRepository.deleteAll();
 
-        List<BeerDTO> beers = beerController.listBeers(null, null, false);
+        List<BeerDTO> beers = beerController.listBeers(null, null, false, null, null);
 
         assertThat(beers.size()).isEqualTo(0);
     }
 
     @Test
     void getBeerById() {
-        BeerDTO beer = beerController.listBeers(null, null, false).get(0);
+        BeerDTO beer = beerController.listBeers(null, null, false, null, null).get(0);
 
         assertThat(beer).isNotNull();
     }
