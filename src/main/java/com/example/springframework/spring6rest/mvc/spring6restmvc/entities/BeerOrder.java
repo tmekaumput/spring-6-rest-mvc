@@ -1,11 +1,10 @@
 package com.example.springframework.spring6rest.mvc.spring6restmvc.entities;
 /*
  * @Author tmekaumput
- * @Date 6/4/24 5:38 pm
+ * @Date 15/4/24 4:30 pm
  *
  */
 
-import com.example.springframework.spring6rest.mvc.spring6restmvc.model.BeerStyle;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -23,48 +22,43 @@ import org.hibernate.type.SqlTypes;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
-import java.util.UUID;
 
 @Data
 @Builder
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Beer {
+public class BeerOrder {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
     @JdbcTypeCode(SqlTypes.CHAR)
-    private UUID id;
+    private String id;
 
     @Version
-    private Integer version;
+    private Long version;
 
     @NotNull
     @NotBlank
-    @Size(max = 50)
-    @Column(length = 50)
-    private String beerName;
+    @Size(max = 255)
+    @Column(length = 255)
+    private String customerRef;
 
-    @NotNull
-    private BeerStyle beerStyle;
+    @ManyToOne
+    private Customer customer;
 
-    @NotBlank
-    @NotNull
-    private String upc;
-    private Integer quantityOnHand;
-
-    @NotNull
-    private BigDecimal price;
-
-    @OneToMany(mappedBy = "beer")
+    @OneToMany(mappedBy = "beerOrder")
     private Set<BeerOrderLine> beerOrderLines;
 
     @CreationTimestamp
     private LocalDateTime createdDate;
 
     @UpdateTimestamp
-    private LocalDateTime updateDate;
+    private LocalDateTime lastModifiedDate;
+
+
+
+
 }

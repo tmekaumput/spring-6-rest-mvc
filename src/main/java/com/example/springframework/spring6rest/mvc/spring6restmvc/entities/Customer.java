@@ -17,6 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @Builder
@@ -51,4 +52,11 @@ public class Customer {
 
     private Date createdDate;
     private Date lastModifiedDate;
+
+    @OneToMany(mappedBy = "customer")
+    private Set<BeerOrder> beerOrders;
+
+    public boolean isNew() {
+        return id == null;
+    }
 }

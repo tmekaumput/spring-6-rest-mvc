@@ -1,15 +1,13 @@
 package com.example.springframework.spring6rest.mvc.spring6restmvc.entities;
 /*
  * @Author tmekaumput
- * @Date 6/4/24 5:38 pm
+ * @Date 15/4/24 6:51 pm
  *
  */
 
-import com.example.springframework.spring6rest.mvc.spring6restmvc.model.BeerStyle;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,52 +17,42 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
+import org.springframework.data.annotation.CreatedDate;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
-import java.util.UUID;
 
 @Data
-@Builder
 @Entity
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
-public class Beer {
+@AllArgsConstructor
+public class BeerOrderLine {
 
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(length = 36, columnDefinition = "varchar(36)", updatable = false, nullable = false)
+    @Column(length = 36, columnDefinition = "varchar(36)", nullable = false, updatable = false)
     @JdbcTypeCode(SqlTypes.CHAR)
-    private UUID id;
+    private String id;
 
     @Version
-    private Integer version;
+    private Long version;
 
     @NotNull
-    @NotBlank
-    @Size(max = 50)
-    @Column(length = 50)
-    private String beerName;
+    private Integer orderQuantity;
 
     @NotNull
-    private BeerStyle beerStyle;
+    private Integer quantityAllocated;
 
-    @NotBlank
-    @NotNull
-    private String upc;
-    private Integer quantityOnHand;
+    @ManyToOne
+    private Beer beer;
 
-    @NotNull
-    private BigDecimal price;
-
-    @OneToMany(mappedBy = "beer")
-    private Set<BeerOrderLine> beerOrderLines;
+    @ManyToOne
+    private BeerOrder beerOrder;
 
     @CreationTimestamp
     private LocalDateTime createdDate;
 
     @UpdateTimestamp
-    private LocalDateTime updateDate;
+    private LocalDateTime lastModifiedDate;
 }
