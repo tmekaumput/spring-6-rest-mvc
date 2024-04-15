@@ -19,8 +19,8 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -59,6 +59,28 @@ public class BeerOrder {
     private LocalDateTime lastModifiedDate;
 
 
+    @Override
+    public String toString() {
+        return "BeerOrder{" +
+                "id='" + id + '\'' +
+                ", version=" + version +
+                ", customerRef='" + customerRef + '\'' +
+                ", customer=" + customer +
+                ", createdDate=" + createdDate +
+                ", lastModifiedDate=" + lastModifiedDate +
+                '}';
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        BeerOrder beerOrder = (BeerOrder) o;
+        return Objects.equals(id, beerOrder.id) && Objects.equals(version, beerOrder.version);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, version);
+    }
 }
