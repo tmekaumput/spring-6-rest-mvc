@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +42,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Slf4j
 class BeerControllerIntegrationTest {
 
+    private static final int DEFAULT_PAGE_SIZE = 25;
+
     @Autowired
     BeerController beerController;
 
@@ -65,46 +68,55 @@ class BeerControllerIntegrationTest {
 
     @Test
     void listAllBeers() {
-        List<BeerDTO> beers = beerController.listBeers(null, null, false, null, null);
+        Page<BeerDTO> beers = beerController.listBeers(null, null, false, null, null);
 
-        assertThat(beers.size()).isEqualTo(2413);
+        assertThat(beers.getContent().size()).isEqualTo(DEFAULT_PAGE_SIZE);
     }
 
     @Test
     void listBeersByName() {
-        List<BeerDTO> beers = beerController.listBeers("IPA", null, false, null, null);
+        Page<BeerDTO> beers = beerController.listBeers("IPA", null, false, null, null);
 
-        assertThat(beers.size()).isEqualTo(336);
+        assertThat(beers.getContent().size()).isEqualTo(DEFAULT_PAGE_SIZE);
     }
 
     @Test
     void listBeersByNameWithoutInventory() {
-        List<BeerDTO> beers = beerController.listBeers("IPA", null, false, null, null);
+        Page<BeerDTO> beers = beerController.listBeers("IPA", null, false, null, null);
 
-        assertThat(beers.size()).isEqualTo(336);
-        assertThat(beers.get(0).getQuantityOnHand()).isNull();
+        assertThat(beers.getContent().size()).isEqualTo(DEFAULT_PAGE_SIZE);
+        assertThat(beers.getContent().get(0).getQuantityOnHand()).isNull();
     }
 
     @Test
     void listBeersByNameWithInventory() {
-        List<BeerDTO> beers = beerController.listBeers("IPA", null, true, null, null);
+        Page<BeerDTO> beers = beerController.listBeers("IPA", null, true, null, null);
 
-        assertThat(beers.size()).isEqualTo(336);
-        assertThat(beers.get(0).getQuantityOnHand()).isNotNull();
+        assertThat(beers.getContent().size()).isEqualTo(DEFAULT_PAGE_SIZE);
+        assertThat(beers.getContent().get(0).getQuantityOnHand()).isNotNull();
+    }
+
+
+    @Test
+    void listBeersByNameWithInventoryPage2() {
+        Page<BeerDTO> beers = beerController.listBeers("IPA", null, true, 2, 50);
+
+        assertThat(beers.getContent().size()).isEqualTo(50);
+        assertThat(beers.getContent().get(0).getQuantityOnHand()).isNotNull();
     }
 
     @Test
     void listBeersByStyle() {
-        List<BeerDTO> beers = beerController.listBeers(null, BeerStyle.LAGER, false, null, null);
+        Page<BeerDTO> beers = beerController.listBeers(null, BeerStyle.LAGER, false, 1, 100);
 
-        assertThat(beers.size()).isEqualTo(39);
+        assertThat(beers.getContent().size()).isEqualTo(39);
     }
 
     @Test
     void listBeersByNameAndStyle() {
-        List<BeerDTO> beers = beerController.listBeers("Shift", BeerStyle.LAGER, false, null, null);
+        Page<BeerDTO> beers = beerController.listBeers("Shift", BeerStyle.LAGER, false, null, null);
 
-        assertThat(beers.size()).isEqualTo(3);
+        assertThat(beers.getContent().size()).isEqualTo(3);
     }
 
     @Test
@@ -113,14 +125,14 @@ class BeerControllerIntegrationTest {
     void emptyList() {
         beerRepository.deleteAll();
 
-        List<BeerDTO> beers = beerController.listBeers(null, null, false, null, null);
+        Page<BeerDTO> beers = beerController.listBeers(null, null, false, null, null);
 
-        assertThat(beers.size()).isEqualTo(0);
+        assertThat(beers.getContent().size()).isEqualTo(0);
     }
 
     @Test
     void getBeerById() {
-        BeerDTO beer = beerController.listBeers(null, null, false, null, null).get(0);
+        BeerDTO beer = beerController.listBeers(null, null, false, null, null).getContent().get(0);
 
         assertThat(beer).isNotNull();
     }

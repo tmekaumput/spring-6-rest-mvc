@@ -7,16 +7,17 @@ package com.example.springframework.spring6rest.mvc.spring6restmvc.repositories;
 
 import com.example.springframework.spring6rest.mvc.spring6restmvc.entities.Beer;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.model.BeerStyle;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface BeerRepository extends JpaRepository<Beer, UUID> {
 
-    List<Beer> findAllByBeerNameIsLikeIgnoreCase(String beerName);
+    Page<Beer> findAllByBeerNameIsLikeIgnoreCase(String beerName, Pageable pageable);
 
-    List<Beer> findAllByBeerStyle(BeerStyle beerStyle);
+    Page<Beer> findAllByBeerStyle(BeerStyle beerStyle, Pageable pageable);
 
-    List<Beer> findAllByBeerNameIsLikeIgnoreCaseAndBeerStyle(String s, BeerStyle beerStyle);
+    Page<Beer> findAllByBeerNameIsLikeIgnoreCaseAndBeerStyle(String s, BeerStyle beerStyle, Pageable pageable);
 }

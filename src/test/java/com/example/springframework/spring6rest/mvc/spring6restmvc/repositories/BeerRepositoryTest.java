@@ -14,6 +14,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -61,15 +63,43 @@ public class BeerRepositoryTest {
 
     @Test
     void findBeersByName() {
-        List<Beer> list = beerRepository.findAllByBeerNameIsLikeIgnoreCase("%IPA%");
+        Page<Beer> list = beerRepository.findAllByBeerNameIsLikeIgnoreCase("%IPA%", buildPageRequest(DEFAULT_PAGE, DEFAULT_PAGE_SIZE));
 
-        assertThat(list.size()).isEqualTo(336);
+        assertThat(list.getContent().size()).isEqualTo(336);
     }
 
     @Test
     void findBeersByStyle() {
-        List<Beer> list = beerRepository.findAllByBeerStyle(BeerStyle.LAGER);
+        Page<Beer> list = beerRepository.findAllByBeerStyle(BeerStyle.LAGER, buildPageRequest(DEFAULT_PAGE, DEFAULT_PAGE_SIZE));
 
-        assertThat(list.size()).isEqualTo(39);
+        assertThat(list.getContent().size()).isEqualTo(39);
     }
+
+
+    public PageRequest buildPageRequest(Integer pageNumber, Integer pageSize) {
+        int queryPageNumber;
+        int queryPageSize;
+
+        if(pageNumber != null && pageNumber > 0) {
+            queryPageNumber = pageNumber -1;
+        }else{
+            queryPageNumber = DEFAULT_PAGE;
+        }
+
+        if(pageSize == null) {
+            queryPageSize = DEFAULT_PAGE_SIZE;
+        }else{
+            if(pageSize > 1000) {
+                queryPageSize = 1000;
+            }else {
+                queryPageSize = pageSize;
+            }
+        }
+
+        return PageRequest.of(queryPageNumber, queryPageSize);
+    }
+
+    private final static int DEFAULT_PAGE = 0;
+    private final static int DEFAULT_PAGE_SIZE = 25;
+
 }
