@@ -18,6 +18,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -46,7 +47,8 @@ public class Category {
     @JoinTable(name = "beer_category",
     joinColumns = @JoinColumn(name = "category_id"),
     inverseJoinColumns = @JoinColumn(name = "beer_id"))
-    private Set<Beer> beers;
+    @Builder.Default
+    private Set<Beer> beers = new HashSet<>();
 
     @CreationTimestamp
     private LocalDateTime createdDate;

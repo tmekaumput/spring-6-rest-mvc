@@ -9,6 +9,7 @@ import com.example.springframework.spring6rest.mvc.spring6restmvc.bootstrap.Data
 import com.example.springframework.spring6rest.mvc.spring6restmvc.entities.Beer;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.model.BeerStyle;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.services.BeerCsvServiceImpl;
+import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.annotation.Rollback;
 
 import java.math.BigDecimal;
 import java.util.List;

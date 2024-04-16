@@ -39,7 +39,7 @@ class BeerOrderRepositoryTest {
     }
 
     @Test
-    @Rollback
+//    @Rollback
     @Transactional
     void createBeerOrder() {
         BeerOrder beerOrder = BeerOrder.builder()
@@ -47,7 +47,7 @@ class BeerOrderRepositoryTest {
                 .customer(customer)
                 .build();
 
-        BeerOrder savedBeerOrder = beerOrderRepository.save(beerOrder);
+        BeerOrder savedBeerOrder = beerOrderRepository.saveAndFlush(beerOrder);
 
         System.out.println(savedBeerOrder.getId());
         System.out.println(savedBeerOrder.getCustomer());
