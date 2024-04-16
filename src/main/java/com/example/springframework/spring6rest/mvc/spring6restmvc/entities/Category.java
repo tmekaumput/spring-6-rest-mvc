@@ -1,14 +1,11 @@
 package com.example.springframework.spring6rest.mvc.spring6restmvc.entities;
 /*
  * @Author tmekaumput
- * @Date 6/4/24 5:38 pm
+ * @Date 16/4/24 10:56 am
  *
  */
 
-import com.example.springframework.spring6rest.mvc.spring6restmvc.model.BeerStyle;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,18 +17,17 @@ import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.type.SqlTypes;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
 @Data
-@Builder
 @Entity
-@AllArgsConstructor
+@Builder
 @NoArgsConstructor
-public class Beer {
-
+@AllArgsConstructor
+public class Category {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
@@ -40,36 +36,34 @@ public class Beer {
     private UUID id;
 
     @Version
-    private Integer version;
+    private Long version;
 
-    @NotNull
-    @NotBlank
     @Size(max = 50)
     @Column(length = 50)
-    private String beerName;
-
-    @NotNull
-    private BeerStyle beerStyle;
-
-    @NotBlank
-    @NotNull
-    private String upc;
-    private Integer quantityOnHand;
-
-    @NotNull
-    private BigDecimal price;
-
-    @OneToMany(mappedBy = "beer")
-    private Set<BeerOrderLine> beerOrderLines;
+    private String description;
 
     @ManyToMany
-    @JoinTable(name = "beer_category", joinColumns = @JoinColumn(name = "beer_id"),
-        inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories;
+    @JoinTable(name = "beer_category",
+    joinColumns = @JoinColumn(name = "category_id"),
+    inverseJoinColumns = @JoinColumn(name = "beer_id"))
+    private Set<Beer> beers;
 
     @CreationTimestamp
     private LocalDateTime createdDate;
 
     @UpdateTimestamp
-    private LocalDateTime updateDate;
+    private LocalDateTime lastModifiedDate;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Category category = (Category) o;
+        return Objects.equals(id, category.id) && Objects.equals(version, category.version);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, version);
+    }
 }
