@@ -61,6 +61,7 @@ public class Customer {
     @UpdateTimestamp
     private Date lastModifiedDate;
 
+    @Builder.Default
     @OneToMany(mappedBy = "customer")
     private Set<BeerOrder> beerOrders = new HashSet<>();
 

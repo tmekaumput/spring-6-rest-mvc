@@ -26,7 +26,7 @@ import java.util.Set;
 @Data
 @Builder
 @Entity
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 public class BeerOrder {
 
@@ -48,6 +48,21 @@ public class BeerOrder {
 
     @ManyToOne
     private Customer customer;
+
+    public BeerOrder(String id, Long version, String customerRef, Customer customer, Set<BeerOrderLine> beerOrderLines, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+        this.id = id;
+        this.version = version;
+        this.customerRef = customerRef;
+        this.setCustomer(customer);
+        this.beerOrderLines = beerOrderLines;
+        this.createdDate = createdDate;
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+        customer.getBeerOrders().add(this);
+    }
 
     @OneToMany(mappedBy = "beerOrder")
     private Set<BeerOrderLine> beerOrderLines;

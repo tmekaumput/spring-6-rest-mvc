@@ -41,7 +41,7 @@ class BeerOrderRepositoryTest {
     @Test
     @Rollback
     @Transactional
-    void beerOrders() {
+    void createBeerOrder() {
         BeerOrder beerOrder = BeerOrder.builder()
                 .customerRef("Test order")
                 .customer(customer)
@@ -50,5 +50,7 @@ class BeerOrderRepositoryTest {
         BeerOrder savedBeerOrder = beerOrderRepository.save(beerOrder);
 
         System.out.println(savedBeerOrder.getId());
+        System.out.println(savedBeerOrder.getCustomer());
+        System.out.println(customer.getBeerOrders().size());
     }
 }
