@@ -9,7 +9,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -49,12 +48,25 @@ public class BeerOrder {
     @ManyToOne
     private Customer customer;
 
-    public BeerOrder(String id, Long version, String customerRef, Customer customer, Set<BeerOrderLine> beerOrderLines, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
+    @OneToMany(mappedBy = "beerOrder")
+    private Set<BeerOrderLine> beerOrderLines;
+
+    @OneToOne(cascade = CascadeType.PERSIST)
+    private BeerOrderShipment beerOrderShipment;
+
+    @CreationTimestamp
+    private LocalDateTime createdDate;
+
+    @UpdateTimestamp
+    private LocalDateTime lastModifiedDate;
+
+    public BeerOrder(String id, Long version, String customerRef, Customer customer, Set<BeerOrderLine> beerOrderLines, BeerOrderShipment beerOrderShipment, LocalDateTime createdDate, LocalDateTime lastModifiedDate) {
         this.id = id;
         this.version = version;
         this.customerRef = customerRef;
         this.setCustomer(customer);
         this.beerOrderLines = beerOrderLines;
+        this.beerOrderShipment = beerOrderShipment;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
     }
@@ -63,16 +75,6 @@ public class BeerOrder {
         this.customer = customer;
         customer.getBeerOrders().add(this);
     }
-
-    @OneToMany(mappedBy = "beerOrder")
-    private Set<BeerOrderLine> beerOrderLines;
-
-    @CreationTimestamp
-    private LocalDateTime createdDate;
-
-    @UpdateTimestamp
-    private LocalDateTime lastModifiedDate;
-
 
     @Override
     public String toString() {
