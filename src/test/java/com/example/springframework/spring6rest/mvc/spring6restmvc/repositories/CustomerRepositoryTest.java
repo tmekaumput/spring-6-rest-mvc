@@ -25,6 +25,6 @@ public class CustomerRepositoryTest {
                 .build());
 
         assertThat(savedCustomer).isNotNull();
-        assertThat(savedCustomer.getId()).isEqualTo(1);
+        assertThat(customerRepository.findAll().size()).isEqualTo(1);
     }
 }
