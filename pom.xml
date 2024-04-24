@@ -8,11 +8,11 @@
 		<version>3.2.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example.springframework.spring6rest.mvc</groupId>
-	<artifactId>spring-6-rest-mvc</artifactId>
+	<groupId>com.example.springframework.spring6rest</groupId>
+	<artifactId>spring-6-rest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-6-rest-mvc</name>
-	<description>spring-6-rest-mvc</description>
+	<name>spring-6-rest</name>
+	<description>spring-6-rest</description>
 	<properties>
 		<java.version>17</java.version>
 		<org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
