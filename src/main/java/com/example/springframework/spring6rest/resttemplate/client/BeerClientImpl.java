@@ -29,11 +29,7 @@ public class BeerClientImpl implements BeerClient {
 
     @Override
     public Page<BeerDTO> listBeers() {
-        RestTemplate restTemplate = restTemplateBuilder.build();
-
-        ResponseEntity<BeerDTOPageImpl> response = restTemplate.getForEntity(BASE_URI + BEER_PATH, BeerDTOPageImpl.class);
-
-        return response.getBody();
+        return listBeers(null, null, null, null, null);
     }
 
     @Override
