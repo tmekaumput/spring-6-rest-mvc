@@ -111,4 +111,16 @@ class BeerClientImplTest {
         assertThat(savedBeer.getId()).isNotNull();
         assertThat(savedBeer.getBeerName()).isEqualTo(newBeer.getBeerName());
     }
+
+    @Test
+    void updateBeer() {
+        BeerDTO existing = beerClient.listBeers().getContent().get(0);
+
+        existing.setBeerName("Updated Beer Name");
+
+        BeerDTO updatedBeer = beerClient.updateBeer(existing);
+
+        assertThat(updatedBeer).isNotNull();
+        assertThat(existing.getBeerName()).isEqualTo(updatedBeer.getBeerName());
+    }
 }
