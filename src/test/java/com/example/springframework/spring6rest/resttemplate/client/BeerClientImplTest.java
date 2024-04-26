@@ -9,9 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /*
@@ -91,5 +93,22 @@ class BeerClientImplTest {
         assertThrows(HttpClientErrorException.class, () -> beerClient.getBeerById(UUID.randomUUID()));
 
 
+    }
+
+    @Test
+    void createBeer() {
+        BeerDTO newBeer = BeerDTO.builder()
+                .beerName("New Beer")
+                .beerStyle(BeerStyle.LAGER)
+                .upc("123456")
+                .price(new BigDecimal("5.00"))
+                .quantityOnHand(10)
+                .build();
+
+        BeerDTO savedBeer = beerClient.createBeer(newBeer);
+
+        assertNotNull(savedBeer);
+        assertThat(savedBeer.getId()).isNotNull();
+        assertThat(savedBeer.getBeerName()).isEqualTo(newBeer.getBeerName());
     }
 }
