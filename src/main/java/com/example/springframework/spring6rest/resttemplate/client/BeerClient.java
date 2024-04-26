@@ -14,6 +14,7 @@ import java.util.UUID;
 public interface BeerClient {
     BeerDTO createBeer(BeerDTO beerDTO);
     BeerDTO updateBeer(BeerDTO beerDTO);
+    BeerDTO deleteBeer(UUID beerId);
     BeerDTO getBeerById(UUID id);
     Page<BeerDTO> listBeers();
     Page<BeerDTO> listBeers(String beerName, BeerStyle beerStyle, Boolean showInventory, Integer pageNumber, Integer pageSize);

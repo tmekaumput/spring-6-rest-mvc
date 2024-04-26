@@ -123,4 +123,14 @@ class BeerClientImplTest {
         assertThat(updatedBeer).isNotNull();
         assertThat(existing.getBeerName()).isEqualTo(updatedBeer.getBeerName());
     }
+
+    @Test
+    void deleteBeer() {
+        BeerDTO existing = beerClient.listBeers().getContent().get(0);
+
+        beerClient.deleteBeer(existing.getId());
+
+        assertThrows(HttpClientErrorException.class, () -> beerClient.getBeerById(existing.getId()));
+
+    }
 }
