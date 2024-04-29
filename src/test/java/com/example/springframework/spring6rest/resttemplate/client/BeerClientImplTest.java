@@ -1,6 +1,5 @@
 package com.example.springframework.spring6rest.resttemplate.client;
 
-import com.example.springframework.spring6rest.mvc.spring6restmvc.controller.NotFoundException;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.model.BeerDTO;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.model.BeerStyle;
 import org.junit.jupiter.api.Test;

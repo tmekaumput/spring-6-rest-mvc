@@ -5,6 +5,7 @@ package com.example.springframework.spring6rest.resttemplate.client;
  *
  */
 
+
 import com.example.springframework.spring6rest.mvc.spring6restmvc.model.BeerDTO;
 import com.example.springframework.spring6rest.mvc.spring6restmvc.model.BeerStyle;
 import org.springframework.data.domain.Page;

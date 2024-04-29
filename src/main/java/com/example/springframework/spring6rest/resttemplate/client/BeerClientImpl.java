@@ -28,9 +28,9 @@ public class BeerClientImpl implements BeerClient {
 
     private static final String BASE_URI = "http://localhost:8080";
 
-    private static final String BEER_PATH = "/api/v1/beer";
+    public static final String BEER_PATH = "/api/v1/beer";
 
-    private static final String BEER_ID_PATH = "/api/v1/beer/{beerId}";
+    public static final String BEER_ID_PATH = "/api/v1/beer/{beerId}";
 
 
     @Override
